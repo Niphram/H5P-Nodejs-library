@@ -50,6 +50,10 @@ export class H5PPlayerComponent extends HTMLElement {
         this.setAttribute('read-only-state', readOnlyState);
     }
 
+    get nonce(): string | undefined {
+        return this.getAttribute('nonce') ?? undefined;
+    }
+
     /**
      * The internal H5P instance object of the H5P content.
      *
@@ -515,11 +519,13 @@ export class H5PPlayerComponent extends HTMLElement {
     private async renderDiv(playerModel: IPlayerModel): Promise<void> {
         addStylesheets(
             playerModel.styles,
-            document.getElementsByTagName('head')[0]
+            document.getElementsByTagName('head')[0],
+            this.nonce
         );
         await addScripts(
             playerModel.scripts,
-            document.getElementsByTagName('head')[0]
+            document.getElementsByTagName('head')[0],
+            this.nonce
         );
 
         const h5pContainerDiv = document.createElement('div');
@@ -541,7 +547,8 @@ export class H5PPlayerComponent extends HTMLElement {
         // iframe.
         await addScripts(
             window.H5PIntegration.core.scripts,
-            document.getElementsByTagName('head')[0]
+            document.getElementsByTagName('head')[0],
+            this.nonce
         );
 
         const h5pIFrameWrapper = document.createElement('div');

@@ -35,6 +35,10 @@ export class H5PEditorComponent extends HTMLElement {
         }
     }
 
+    public get nonce(): string | undefined {
+        return this.getAttribute('nonce') ?? undefined;
+    }
+
     /**
      * Called when the component needs to load data about content. The endpoint
      * called in here combines the results of H5PEditor.render(...) and
@@ -396,7 +400,8 @@ export class H5PEditorComponent extends HTMLElement {
         // (to avoid side effects).
         await addScripts(
             editorModel.scripts,
-            document.getElementsByTagName('head')[0]
+            document.getElementsByTagName('head')[0],
+            this.nonce
         );
 
         // Create the necessary DOM tree.

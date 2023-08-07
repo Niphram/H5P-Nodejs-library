@@ -8,11 +8,13 @@ const lock = new AwaitLock();
  * time. Makes sure the scripts are loaded in the order of the list.
  * @param scripts a list URLS to JavaScript files
  * @param target the element to which the scripts should be added.
+ * @param nonce the nonce that should be added to the script tags
  * @returns ignore the return value
  */
 export async function addScripts(
     scripts: string[],
-    target: HTMLElement
+    target: HTMLElement,
+    nonce?: string
 ): Promise<any> {
     // We need to lock this function to avoid it being started nearly
     // simultaneously. This can happen if several instances of the web component
@@ -39,6 +41,7 @@ export async function addScripts(
                 }
                 const scriptTag = document.createElement('script');
                 scriptTag.src = scriptUrl;
+                scriptTag.nonce = nonce;
                 // We store the original src used by H5P as the protocol and
                 // hostname are part of the src attribute.
                 scriptTag.dataset.h5pSrc = scriptUrl;
@@ -65,12 +68,16 @@ export async function addScripts(
  * already added to the target element, it is not added a second time.
  * @param styles a list of URLs to stylesheets to add
  * @param target the element to which the scripts should be added
- * @param addFontsToHead if true, @font-face rules found in the loaded
+ * @param nonce the nonce that should be added to the style tag
  * stylesheets will also be duplicated and added to the head of the document.
  * This is necessary to load fonts that should be displayed inside the shadow
  * DOM.
  */
-export function addStylesheets(styles: string[], target: HTMLElement): void {
+export function addStylesheets(
+    styles: string[],
+    target: HTMLElement,
+    nonce?: string
+): void {
     const existingTargetStylesheets = Array.from(
         target.getElementsByTagName('link')
     ).map((el) => el.dataset.h5pHref);
@@ -84,6 +91,7 @@ export function addStylesheets(styles: string[], target: HTMLElement): void {
         // We store the original href in the data-h5p-attribute as the browser
         // internally adds the protocol and hostname to the href attribute.
         stylesheet.dataset.h5pHref = styleUrl;
+        stylesheet.nonce = nonce;
         stylesheet.rel = 'stylesheet';
         stylesheet.href = styleUrl;
         stylesheet.type = 'text/css';
