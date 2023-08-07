@@ -21,6 +21,7 @@ declare global {
                 'context-id'?: string;
                 'read-only-state'?: boolean;
                 'as-user-id'?: string;
+                nonce?: string;
                 ref?: any;
             };
         }
@@ -32,6 +33,7 @@ interface IH5PPlayerUIProps {
     contextId?: string;
     asUserId?: string;
     readOnlyState?: boolean;
+    nonce?: string;
     loadContentCallback: (
         contentId: string,
         contextId?: string,
@@ -118,6 +120,7 @@ export default class H5PPlayerUI extends Component<IH5PPlayerUIProps> {
                 context-id={this.props.contextId}
                 as-user-id={this.props.asUserId}
                 read-only-state={this.props.readOnlyState}
+                nonce={this.props.nonce}
             />
         );
     }

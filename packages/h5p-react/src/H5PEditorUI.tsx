@@ -18,6 +18,7 @@ declare global {
             'h5p-editor': {
                 'content-id'?: string;
                 'h5p-url'?: string;
+                nonce?: string;
                 ref?: any;
             };
         }
@@ -26,6 +27,7 @@ declare global {
 
 interface IH5PEditorUIProps {
     contentId: string;
+    nonce?: string;
     loadContentCallback: (contentId: string) => Promise<
         IEditorModel & {
             library?: string;
@@ -82,6 +84,7 @@ export default class H5PEditorUI extends Component<IH5PEditorUIProps> {
             <h5p-editor
                 ref={this.h5pEditor}
                 content-id={this.props.contentId}
+                nonce={this.props.nonce}
             ></h5p-editor>
         );
     }
